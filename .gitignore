@@ -1,10 +1,11 @@
 .ipynb_checkpoints/
 Notebooks/example/
+Rapport/images/
+Rapport/old/
 *.yml
 *.pyc
 sandbox*.*
 desktop.ini
 __pycache__
 ~$*.*
-Classifier.pkl
-ClassifierBig.pkl
+*).pkl
