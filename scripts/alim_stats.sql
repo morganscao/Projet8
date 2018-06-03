@@ -1,3 +1,5 @@
+# 04/18 Création Morgan SCAO
+
 set @dtref = '2018-04-01';
 set @dtmoins1 = @dtref - interval 1 year;
 set @dtmoins2 = @dtref - interval 2 year;
@@ -123,4 +125,4 @@ tt.procolMoins4=aa.procol,
 tt.encoursMoins4=aa.encours;
 
 
-select * from tmp.scores_stats;
+#select * from tmp.scores_stats where substr(ii_CJ,1,1)=5;

@@ -1,5 +1,11 @@
+# 04/18 Création Morgan SCAO
+
 set @dtref = '2018-04-01';
 set @dtmoins1 = @dtref - interval 1 year;
+
+set @exoref = 20171231;
+set @exoref1 = 20161231;
+set @exoref2 = 20151231;
 
 delete from tmp.scores_predictions;
 
@@ -31,10 +37,6 @@ update tmp.scores_predictions tt set jd_NBPP=
 update tmp.scores_predictions tt set sb_EnBourse=
 (select 1 from sdv1.bourse_isin as sb where sb.siren=tt.siren);
 
-
-
-# TODO : intégrer le temps
-
 # Table jo.greffes_affaires_siren
 update tmp.scores_predictions tt set jg_NBDE=
 (select count(*) from jo.greffes_affaires_siren as jg where jg.qualite='DE' and jg.entSiren=tt.siren and dateInsert<@dtmoins1);
@@ -46,9 +48,6 @@ update tmp.scores_predictions tt set bm_NBMARQUES=
 (select count(*) from bopi.marques as bm where bm.sirenDeposant=tt.siren);
 
 # Table jo.bilans_postes
-set @exoref = 20171231;
-set @exoref1 = 20161231;
-set @exoref2 = 20151231;
 update tmp.scores_predictions tt inner join jo.bilans_postes jb on jb.siren=tt.siren 
 and jb.dateExercice = @exoref 
 and jb.liasse='2050' and jb.monnaie='EUR' and jb.dureeExercice=12 and (select typeBilan from jo.bilans bb where jb.id=bb.id)='N' 
@@ -71,7 +70,13 @@ jb_2_DR=jb.DR,jb_2_EC=jb.EC,jb_2_EE=jb.EE,jb_2_FJ=jb.FJ,jb_2_FK=jb.FK,jb_2_FR=jb
 jb_2_GP=jb.GP,jb_2_GU=jb.GU,jb_2_GV=jb.GV,jb_2_GW=jb.GW,jb_2_HD=jb.HD,jb_2_HH=jb.HH,jb_2_HN=jb.HN;
 
 
+# Web : A vérifier
+# Table jo.infos_entrep
+update tmp.scores_predictions tt set ji_Web=
+(select 1 from jo.infos_entrep as ji where ji.siren=tt.siren and (length(web)>0 or length(web2)>0 or web_nbsites>0));
+# Table jo.liensRef
+update tmp.scores_predictions tt set ji_Web=
+(select 1 from jo.liensRef as ji where ji.siren=tt.siren and (ji_Web is null or ji_Web=0) and length(web)>0);
 
-#TODO : web
 
-select * from tmp.scores_predictions where substr(ii_CJ,1,1)=5;
+#select * from tmp.scores_predictions where substr(ii_CJ,1,1)=5;
